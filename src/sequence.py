@@ -1,13 +1,13 @@
-
 class Sequence:
     def validator(func):
         def sequence_validation(self, in_seq: str):
             '''
             This function validates sequence of DNA provided by user: converts to uppercase if needed and verificates 
             if string contains only allowed signs: A, T, C, G. '''
-            self.in_seq = in_seq.upper()
-            if any(c not in 'ATCG' for c in self.in_seq):
+            if any(c not in 'ATCG' for c in in_seq.upper()):
                 raise ValueError("Your sequence is not correct - contains letter which is not allowed (A, T, C, G)")
+            func(self, in_seq)
+
         return sequence_validation
     @validator
     def __init__(self, in_seq: str) -> None:
@@ -15,7 +15,8 @@ class Sequence:
         This function reads sequence of DNA provided by user. 
         Default format of provided sequence is str.
         '''
-    
+        self.in_seq = in_seq.upper()
+
     def transcript(self) -> str:
         '''
         This function transcript sequence of DNA. The goal of transcription is to make a RNA copy of a gene's DNA sequence.
@@ -31,7 +32,3 @@ if __name__ == "__main__":
     print("DNA sequence: {}".format(my_seq.in_seq))
     my_seq.transcript()
     print("RNA copy of a gene's DNA sequence: {}".format(my_seq.in_seq))
-
-
-
-
