@@ -1,17 +1,25 @@
-from sequence import *
+from sequence import Sequence
 
-class Alignment(Sequence):
+class Alignment:
 
-    def list_of_sequence_classes(*args):
+    def __init__(self, *args) -> None:
         list_of_classes = []
         for i in range(len(args)):
-            #single_class = Sequence(args[i]).in_seq ## tu nie byłam pewna czy mam zwracać output tych klas, czy  klasy same w sobie? 
             single_class = Sequence(args[i])
             list_of_classes.append(single_class)
-        return list_of_classes
+        self.list_of_seq = list_of_classes
+
+    def __str__(self):
+        return str([str(i) for i in self.list_of_seq])
+
+    def __iter__(self):
+        for i in self.list_of_seq:
+            yield i
 
 if __name__ == "__main__":
-    print(Alignment.list_of_sequence_classes('TCgA', 'CCAAGT', 'AttTGC', 'TTTGGCTG'))
-    my_seq = Alignment('TAAGT')
-    print(my_seq.in_seq)
-    print(my_seq.transcript())
+    print(Alignment('TCgA', 'CCAAGT', 'AttTGC', 'TTTGGCTG'))
+    al = Alignment('TCgA', 'CCAAGT', 'AttTGC', 'TTTGGCTG')
+    print(al.list_of_seq)
+
+    for sequence in al:
+        print(sequence.transcript())

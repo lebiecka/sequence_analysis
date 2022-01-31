@@ -36,7 +36,7 @@ class Sequence:
         '''
         DNA_ReverseComplement = {'A':'T', 'T':'A', 'G':'C','C':'G'}
         in_seq = list(self.in_seq)
-        return ''.join([DNA_ReverseComplement[nuc]for nuc in in_seq])[::-1]
+        return ''.join([DNA_ReverseComplement[nuc]for nuc in in_seq])
 
 if __name__ == "__main__":
     my_seq = Sequence("TGCcAT")
