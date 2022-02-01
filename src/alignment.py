@@ -17,9 +17,8 @@ class Alignment:
             yield i
 
 if __name__ == "__main__":
-    print(Alignment('TCgA', 'CCAAGT', 'AttTGC', 'TTTGGCTG'))
     al = Alignment('TCgA', 'CCAAGT', 'AttTGC', 'TTTGGCTG')
-    print(al.list_of_seq)
+    print(al.__str__())
 
     for sequence in al:
         print(sequence.transcript())
