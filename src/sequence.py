@@ -1,4 +1,5 @@
 class Sequence:
+
     def validator(where_arg):
         def actual_decorator(func):
             def sequence_validation(*args, **kwargs):
@@ -27,7 +28,11 @@ class Sequence:
         Default format of provided sequence is str.
         '''
         self.in_seq = in_seq.upper()
-     
+
+
+    def __str__(self):
+        return str(self.in_seq)    
+
     @validator("OUT")
     def transcript(self) -> str:
         '''
