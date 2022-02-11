@@ -9,12 +9,19 @@ class Alignment:
             list_of_classes.append(single_class)
         self.list_of_seq = list_of_classes
 
+    
+    def __getitem__(self, index):
+        return str(self.list_of_seq[index])
+
     def __str__(self):
         return str([str(i) for i in self.list_of_seq])
 
     def __iter__(self):
         for i in self.list_of_seq:
             yield i
+
+    def __len__(self):
+        return len(self.list_of_seq)
 
     def wunsch(self, seq1, seq2):
        # Use these values to calculate scores
@@ -47,8 +54,8 @@ class Alignment:
                 return mismatch_penalty
 
         # Store length of two sequences
-        n = len(seq1) 
-        m = len(seq2) 
+        n = len(seq1)
+        m = len(seq2)
         
         # Generate matrix of zeros to store scores
         score = zeros(m+1, n+1)
@@ -120,28 +127,35 @@ class Alignment:
         # These two lines reverse the order of the characters in each sequence.
         align1 = align1[::-1]
         align2 = align2[::-1]
+        result = {}
+        result[(seq1, seq2)] = ( align1, score_current)
+        result[(seq2, seq1)] = ( align2, score_current)
         
-        return align2
+        return result
+
 
     def align(self):
-        
-        align_scores={}
-        for i in range(len(self.list_of_seq)):
-            keys = [i for i in range(len(self.list_of_seq))]
-            keys.remove(i)
-            values =[]
-            for j in keys:
-                values.append(self.wunsch(str(self.list_of_seq[i]), str(self.list_of_seq[j])))
-                j+=1
-            res = dict(zip(keys,values))
-            align_scores[i] = res
 
+        align_scores={}
+        pairs = [(str(self.list_of_seq[i]), str(self.list_of_seq[j])) for i in range(len(self.list_of_seq)) for j in range(i+1,len(self.list_of_seq))]
+      
+        align_scores={}
+        for p in range(len(pairs)):
+            align_scores = align_scores | self.wunsch(pairs[p][0], pairs[p][1])
         return align_scores
 
 if __name__ == "__main__":
     al = Alignment('TCgA', 'CCAAGT', 'AttTGC', 'TTTGGCTG')
-    print(al.__str__())
 
+    print(str(al))
+    print(al)
+    print(len(al))
+    
+    print(al[2])
+    print(al[(2, 0)])
+    print(al.align()[(al[0], al[1])]) # to bedzie alignment i score
+
+    '''
     for sequence in al:
         print(sequence.transcript())
-    print(al.align())
+    '''

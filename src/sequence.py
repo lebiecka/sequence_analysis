@@ -29,9 +29,14 @@ class Sequence:
         '''
         self.in_seq = in_seq.upper()
 
-
     def __str__(self):
         return str(self.in_seq)    
+    
+    def __len__(self):
+        return len(self.in_seq)
+    
+    def __getitem__(self, index):
+        return self.in_seq[index]
 
     @validator("OUT")
     def transcript(self) -> str:
