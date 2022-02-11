@@ -127,10 +127,11 @@ class Alignment:
         # These two lines reverse the order of the characters in each sequence.
         align1 = align1[::-1]
         align2 = align2[::-1]
+        summary_score= sum([item for sublist in score for item in sublist])
         result = {}
-        result[(seq1, seq2)] = ( align1, score_current)
-        result[(seq2, seq1)] = ( align2, score_current)
-        
+        result[(seq1, seq2)] = ( align1, summary_score)
+        result[(seq2, seq1)] = ( align2, summary_score)
+ 
         return result
 
 
@@ -142,6 +143,7 @@ class Alignment:
         align_scores={}
         for p in range(len(pairs)):
             align_scores = align_scores | self.wunsch(pairs[p][0], pairs[p][1])
+
         return align_scores
 
 if __name__ == "__main__":
@@ -152,8 +154,8 @@ if __name__ == "__main__":
     print(len(al))
     
     print(al[2])
-    print(al[(2, 0)])
-    print(al.align()[(al[0], al[1])]) # to bedzie alignment i score
+    #print(al[(2, 0)])
+    print(al.align()[(al[2], al[0])]) # to bedzie alignment i score
 
     '''
     for sequence in al:
