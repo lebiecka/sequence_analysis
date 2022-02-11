@@ -1,17 +1,28 @@
+from multiprocessing.dummy import Value
 from sequence import Sequence
+import numpy as np
 
 class Alignment:
 
     def __init__(self, *args) -> None:
+
         list_of_classes = []
+        align_scores= {}
         for i in range(len(args)):
             single_class = Sequence(args[i])
             list_of_classes.append(single_class)
         self.list_of_seq = list_of_classes
 
+        self.align_scores = align_scores
     
     def __getitem__(self, index):
-        return str(self.list_of_seq[index])
+
+        if isinstance(index, tuple):
+            if len(index) > 2:
+                raise ValueError("Number of sequences is not allowed!")
+            seq1, seq2  = index
+            return self.wunsch(self.list_of_seq[seq1], self.list_of_seq[seq2]).popitem()
+        return self.list_of_seq[index]
 
     def __str__(self):
         return str([str(i) for i in self.list_of_seq])
@@ -23,7 +34,7 @@ class Alignment:
     def __len__(self):
         return len(self.list_of_seq)
 
-    def wunsch(self, seq1, seq2):
+    def wunsch(self, seq1: str, seq2: str) -> dict:
        # Use these values to calculate scores
         gap_penalty = -1
         match_award = 1
@@ -127,37 +138,36 @@ class Alignment:
         # These two lines reverse the order of the characters in each sequence.
         align1 = align1[::-1]
         align2 = align2[::-1]
-        summary_score= sum([item for sublist in score for item in sublist])
         result = {}
-        result[(seq1, seq2)] = ( align1, summary_score)
-        result[(seq2, seq1)] = ( align2, summary_score)
+        result[(seq1, seq2)] = ( align1, np.array(score)[-1][-1])
+        result[(seq2, seq1)] = ( align2,  np.array(score)[-1][-1])
  
         return result
 
 
     def align(self):
 
-        align_scores={}
-        pairs = [(str(self.list_of_seq[i]), str(self.list_of_seq[j])) for i in range(len(self.list_of_seq)) for j in range(i+1,len(self.list_of_seq))]
-      
-        align_scores={}
+        pairs = [(self.list_of_seq[i], self.list_of_seq[j]) for i in range(len(self.list_of_seq)) for j in range(i+1,len(self.list_of_seq))]
         for p in range(len(pairs)):
-            align_scores = align_scores | self.wunsch(pairs[p][0], pairs[p][1])
+            self.align_scores = self.align_scores | self.wunsch(pairs[p][0], pairs[p][1])
 
-        return align_scores
+        return self.align_scores
 
 if __name__ == "__main__":
     al = Alignment('TCgA', 'CCAAGT', 'AttTGC', 'TTTGGCTG')
 
-    print(str(al))
-    print(al)
+    print(str(al)) 
+    print(al) 
     print(len(al))
-    
-    print(al[2])
-    #print(al[(2, 0)])
-    print(al.align()[(al[2], al[0])]) # to bedzie alignment i score
+    print(al[2].transcript()) 
+    print(al[2])    # to zwróci 3. sekwencje
+    print(al[(0,2)])    # to zwróci alignment i score między 1 i 3 sekwencja
 
-    '''
+
+    al.align_scores #none
+    al.align()
+    al.align_scores
+    
     for sequence in al:
         print(sequence.transcript())
-    '''
+    

@@ -31,6 +31,9 @@ class Sequence:
 
     def __str__(self):
         return str(self.in_seq)    
+
+    def __repr__(self):
+        return str(self.in_seq)    
     
     def __len__(self):
         return len(self.in_seq)
