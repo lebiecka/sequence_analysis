@@ -13,9 +13,9 @@ class Alignment:
             list_of_classes.append(single_class)
         self.list_of_seq = list_of_classes
 
-        self.align_scores = align_scores
-    
-    def __getitem__(self, index):
+        self._align_scores = align_scores
+
+    def __getitem__(self, index): 
 
         if isinstance(index, tuple):
             if len(index) > 2:
@@ -25,7 +25,7 @@ class Alignment:
         return self.list_of_seq[index]
 
     def __str__(self):
-        return str([str(i) for i in self.list_of_seq])
+        return str(self.list_of_seq)
 
     def __iter__(self):
         for i in self.list_of_seq:
@@ -34,7 +34,7 @@ class Alignment:
     def __len__(self):
         return len(self.list_of_seq)
 
-    def wunsch(self, seq1: str, seq2: str) -> dict:
+    def wunsch(self, seq1: Sequence, seq2: Sequence) -> dict:
        # Use these values to calculate scores
         gap_penalty = -1
         match_award = 1
@@ -156,18 +156,28 @@ class Alignment:
 if __name__ == "__main__":
     al = Alignment('TCgA', 'CCAAGT', 'AttTGC', 'TTTGGCTG')
 
+    print("\n______Construction_______")
     print(str(al)) 
     print(al) 
     print(len(al))
-    print(al[2].transcript()) 
-    print(al[2])    # to zwróci 3. sekwencje
-    print(al[(0,2)])    # to zwróci alignment i score między 1 i 3 sekwencja
 
-
-    al.align_scores #none
-    al.align()
-    al.align_scores
-    
+    print("\n______Iter_transcript_______")
     for sequence in al:
         print(sequence.transcript())
+    
+
+    print("\n______Transcript_______")
+    print(al[2]) 
+    print(al[2].transcript()) 
+
+    print("\n______Getter_______")
+    print(al[2])    # to zwróci 3. sekwencje
+    print(al[(2,0)])    # to zwróci alignment i score między 1 i 3 sekwencja
+
+
+    print("\n______Align_______")
+    al.align_scores #none
+    al.align()
+    print(al.align_scores)
+    
     
