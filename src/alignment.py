@@ -13,7 +13,7 @@ class Alignment:
             list_of_classes.append(single_class)
         self.list_of_seq = list_of_classes
 
-        self._align_scores = align_scores
+        self.align_scores = align_scores
 
     def __getitem__(self, index): 
 
