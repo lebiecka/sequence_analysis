@@ -1,4 +1,5 @@
 class Sequence:
+
     def validator(where_arg):
         def actual_decorator(func):
             def sequence_validation(*args, **kwargs):
@@ -27,7 +28,19 @@ class Sequence:
         Default format of provided sequence is str.
         '''
         self.in_seq = in_seq.upper()
-     
+
+    def __str__(self):
+        return str(self.in_seq)    
+
+    def __repr__(self):
+        return f"Seq({str(self.in_seq)})"  
+    
+    def __len__(self):
+        return len(self.in_seq)
+    
+    def __getitem__(self, index):
+        return self.in_seq[index]
+
     @validator("OUT")
     def transcript(self) -> str:
         '''
@@ -36,7 +49,7 @@ class Sequence:
         '''
         DNA_ReverseComplement = {'A':'T', 'T':'A', 'G':'C','C':'G'}
         in_seq = list(self.in_seq)
-        return ''.join([DNA_ReverseComplement[nuc]for nuc in in_seq])[::-1]
+        return ''.join([DNA_ReverseComplement[nuc]for nuc in in_seq])
 
 if __name__ == "__main__":
     my_seq = Sequence("TGCcAT")
