@@ -154,7 +154,7 @@ class Alignment:
         return self.align_scores
 
 if __name__ == "__main__":
-    al = Alignment('TCgA', 'CCAAGT', 'AttTGC', 'TTTGGCTG')
+    al = Alignment('TCgA','TCGT',  'CCAAGT', 'AttTGC', 'TTTGGCTG')
 
     print("\n______Construction_______")
     print(str(al)) 
@@ -172,7 +172,11 @@ if __name__ == "__main__":
 
     print("\n______Getter_______")
     print(al[2])    # to zwróci 3. sekwencje
+<<<<<<< HEAD
     print(al[(2,0)])    # to zwróci alignment i score między 1 i 3 sekwencja
+=======
+    print(al[(0,1)])    # to zwróci alignment i score między 1 i 3 sekwencja
+>>>>>>> 50a3be20b6461fc2c6499d1dc53a0e362fc3cdc9
 
 
     print("\n______Align_______")
